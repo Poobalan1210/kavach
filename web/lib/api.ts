@@ -12,9 +12,19 @@ export interface Layer {
   detail: string;
 }
 
+/** One step of a turn: what went into a layer and what came out, from the signed audit records. */
+export interface TraceStep {
+  layer: string;
+  name: string;
+  input: string;
+  output: string;
+  status: LayerStatus;
+}
+
 export interface ChatTurn {
   reply: string;
   layers: Layer[];
+  trace?: TraceStep[];
   outcome: "clear" | "flagged" | "blocked";
   paused: boolean;
   pauseRule: string | null;

@@ -15,6 +15,6 @@ Kavach is a UPI payments agent on the Amazon Bedrock AgentCore harness, using on
 
 **Cover image:** `docs/screenshots/03-console-live-block.png` (the Shield Console blocking a live digital-arrest attempt).
 
-**Screenshots (8, in `docs/screenshots/`):** the guided live demo (both phones during the scam step), landing page, see-it-decide comparison, live Shield Console block, Kamala's phone in Tamil, Arjun's approvals, the benchmark page, the what-broke log.
+**Screenshots (9, in `docs/screenshots/`):** the guided live demo (both phones during the scam step), the layer-by-layer input/output trace of that scam, landing page, see-it-decide comparison, live Shield Console block, Kamala's phone in Tamil, Arjun's approvals, the benchmark page, the what-broke log.
 
 **Article:** `docs/article.md`, ready to paste into Builder Center.

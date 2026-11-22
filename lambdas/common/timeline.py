@@ -110,3 +110,129 @@ def outcome(layers: list[dict]) -> str:
     if any(s == "flag" for s in statuses.values()):
         return "flagged"
     return "clear"
+
+
+def _tool_name(name: str | None) -> str:
+    return (name or "").split("___")[-1]
+
+
+def _num(v):
+    return int(v) if isinstance(v, (int, float)) and float(v).is_integer() else v
+
+
+def _args(args) -> str:
+    """Tool arguments as the model sent them, minus the session ID the hook binds anyway."""
+    if not isinstance(args, dict):
+        return str(args or "")[:160]
+    return ", ".join(f"{k}: {_num(v)}" for k, v in args.items() if v not in (None, "") and k != "sessionId")[:160]
+
+
+def _inr(v) -> str:
+    try:
+        return f"₹{float(v):,.0f}"
+    except (TypeError, ValueError):
+        return "₹?"
+
+
+def _ist(iso: str) -> str:
+    try:
+        t = datetime.fromisoformat(iso).astimezone(timezone(timedelta(hours=5, minutes=30)))
+    except (TypeError, ValueError):
+        return ""
+    return t.strftime("%-d %b, %-I:%M %p IST")
+
+
+CUES = ("urgency", "secrecy", "authority", "threat", "third_party_direction")
+
+
+def trace(records: list[dict], threshold: float = 0.7, names: dict | None = None) -> list[dict]:
+    """The turn as a sequence of steps, each with what went into a layer and what came out.
+
+    Built only from the signed audit records, in the order they were written. Cedar's decision
+    isn't logged by the Gateway, so an allowed payment call with no payment record behind it is
+    reported as a Cedar refusal (the same inference `build` makes). `names` maps payee IDs to
+    display names.
+    """
+    names = names or {}
+    steps: list[dict] = []
+    for r in (x for x in records if x["kind"] == "invocation"):
+        l2, l3 = r["layers"].get("L2", {}), r["layers"].get("L3", {})
+        rules = set(r.get("ruleIds") or [])
+        found = [t.replace("_", " ") for t in l2.get("topics") or []]
+        if l2.get("promptAttack"):
+            found.append("instructions hidden in pasted text")
+        if l2.get("credentials"):
+            found.append("credentials: " + ", ".join(l2["credentials"]))
+        steps.append({
+            "layer": "L2", "name": "Guardrail", "input": "Kamala's message",
+            "output": ("Detected: " + "; ".join(found)) if found else ("Check unavailable" if "error" in l2 else "Nothing detected"),
+            "status": "block" if "R6" in rules or "error" in l2 else "flag" if found else "pass",
+        })
+        score = float(l3.get("score") or 0)
+        cues = [c.replace("_", " ") for c in CUES if l3.get(c) and l3.get(c) not in (0, "0", "none", "low", False)]
+        out = f"Coercion {score:.2f}" + (f" · {', '.join(cues)}" if cues else "")
+        if l3.get("reason"):
+            out += f". {str(l3['reason']).rstrip('.')}."
+        steps.append({
+            "layer": "L3", "name": "Coercion scorer", "input": "Her messages so far in this session",
+            "output": out[:220], "status": "block" if "R7" in rules else "flag" if score >= 0.4 else "pass",
+        })
+        if rules & {"R6", "R7"}:
+            rule = "R6" if "R6" in rules else "R7"
+            steps.append({
+                "layer": "L4", "name": "Session paused", "input": f"{rule} triggered",
+                "output": "No payment can go through in this session" + (" · Arjun alerted" if r.get("alerted") else ""),
+                "status": "block",
+            })
+
+    pending_pay = None
+    for r in records:
+        kind = r["kind"]
+        if kind == "tool_gate":
+            if pending_pay:
+                steps.append({"layer": "L5", "name": "Cedar policy", "input": pending_pay, "output": "Refused: payee or amount outside the household's policy", "status": "block"})
+                pending_pay = None
+            tool = _tool_name(r.get("tool"))
+            l4 = (r["layers"].get("L4") or {})
+            allowed = r["outcome"] == "allow"
+            steps.append({
+                "layer": "L4", "name": "Tool gate", "input": f"{tool}({_args(r.get('input'))})",
+                "output": "Allowed" if allowed else f"Denied: {l4.get('reason', '')}"[:200], "status": "pass" if allowed else "block",
+            })
+            if allowed and tool == "pay_saved_payee":
+                a = r.get("input") if isinstance(r.get("input"), dict) else {}
+                pending_pay = f"{_inr(a.get('amountInr'))} to {names.get(a.get('payeeId'), a.get('payeeId') or '?')}"
+        elif kind == "payment":
+            if pending_pay:
+                steps.append({"layer": "L5", "name": "Cedar policy", "input": pending_pay, "output": "Permitted: saved payee, within the cap", "status": "pass"})
+                pending_pay = None
+            l6 = r["layers"].get("L6") or {}
+            amount = r.get("amountPaise")
+            what = f"₹{int(amount) // 100:,}" if amount else "payment"
+            paid = r["outcome"] == "paid"
+            steps.append({
+                "layer": "L6", "name": "Payment checks", "input": f"{what} to {names.get(r.get('payeeId'), r.get('payeeId') or '?')}",
+                "output": "Paid: limits re-checked, daily total updated" if paid else f"{r['outcome'].capitalize()}: {l6.get('rule') or ''} {l6.get('message') or ''}".strip()[:200],
+                "status": "pass" if paid else "block" if r["outcome"] == "blocked" else "flag",
+            })
+        elif kind == "approval_requested":
+            l8 = r["layers"].get("L8") or {}
+            a = r.get("input") if isinstance(r.get("input"), dict) else {}
+            who = a.get("payeeName") or names.get(a.get("payeeId"), a.get("payeeId")) or "payment"
+            ask = f"{'New payee ' if a.get('payeeVpa') else ''}{who}" + (f" ({a['payeeVpa']})" if a.get("payeeVpa") else "") + \
+                (f", {_inr(a.get('amountInr'))}" if a.get("amountInr") else "")
+            ends = _ist(str(l8.get("coolingEndsAt") or ""))
+            steps.append({
+                "layer": "L8", "name": "Family approval", "input": ask,
+                "output": "Sent to Arjun" + (f" · can't be paid before {ends}" if ends else ""), "status": "flag",
+            })
+    if pending_pay:
+        steps.append({"layer": "L5", "name": "Cedar policy", "input": pending_pay, "output": "Refused: payee or amount outside the household's policy", "status": "block"})
+    if any(r["kind"] == "tool_gate" for r in records):
+        steps.append({"layer": "L7", "name": "Scoped access", "input": "Each tool call", "output": "Ran through the Gateway under that tool's own narrow role", "status": "pass"})
+    if records:
+        steps.append({
+            "layer": "L9", "name": "Signed proof", "input": f"{len(records)} decision{'s' * (len(records) != 1)}",
+            "output": "Each signed with KMS (ECDSA) and locked in S3 for 30 days", "status": "pass",
+        })
+    return steps

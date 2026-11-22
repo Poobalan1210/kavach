@@ -6,6 +6,7 @@ import { LayerStack, STATUS } from "@/components/LayerStack";
 import { Results } from "@/components/Results";
 import { ScamTheatre } from "@/components/ScamTheatre";
 import { DemoBar } from "@/components/DemoBar";
+import { Trace } from "@/components/Trace";
 import { Transcript } from "@/components/Transcript";
 import { explain } from "@/lib/explain";
 import { SCENARIOS } from "@/lib/story";
@@ -158,6 +159,12 @@ function Guided() {
             <ul className="mt-1 list-disc pl-5 text-ink">
               {what.points.map((p) => <li key={p}>{p}</li>)}
             </ul>
+            {chat.last?.trace?.length ? (
+              <details className="mt-2">
+                <summary className="cursor-pointer text-sm font-semibold text-brand">Show every layer's input and output</summary>
+                <div className="mt-2"><Trace message={[...chat.messages].reverse().find((m) => m.from === "user")?.text ?? ""} turn={chat.last} /></div>
+              </details>
+            ) : null}
           </div>
         )}
         <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); setScenario(null); send(text); }}>

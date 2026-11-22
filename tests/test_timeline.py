@@ -48,3 +48,41 @@ def test_l4_and_l6_blocks_carry_reasons():
 def test_prompt_attack_flags_l2():
     t = by_id(timeline.build([inv(rules=["R9"], l2={"topics": [], "promptAttack": True}, outcome="tainted")]))
     assert t["L2"]["status"] == "flag" and "R9" in t["L2"]["detail"]
+
+
+def steps(records, **kw):
+    return [(x["layer"], x["status"]) for x in timeline.trace(records, **kw)]
+
+
+def test_trace_of_a_bill_payment_shows_each_input_and_output():
+    g = gate(tool="payments___pay_saved_payee")
+    g["input"] = {"payeeId": "p-airtel", "amountInr": 299.0, "sessionId": "kv-hh-kamala-x"}
+    p = pay() | {"amountPaise": 29900, "payeeId": "p-airtel"}
+    t = timeline.trace([inv(), g, p], names={"p-airtel": "Airtel Mobile"})
+    assert [(x["layer"], x["status"]) for x in t] == [
+        ("L2", "pass"), ("L3", "pass"), ("L4", "pass"), ("L5", "pass"), ("L6", "pass"), ("L7", "pass"), ("L9", "pass")]
+    assert t[2]["input"] == "pay_saved_payee(payeeId: p-airtel, amountInr: 299)"
+    assert t[3]["input"] == "₹299 to Airtel Mobile" and t[4]["input"] == "₹299 to Airtel Mobile"
+
+
+def test_trace_of_a_digital_arrest_shows_the_pause():
+    r = inv(rules=["R6"], l2={"topics": ["official_demands"]}, score=0.95, outcome="paused")
+    r["layers"]["L3"] |= {"urgency": 1, "secrecy": 1, "authority": 1, "threat": 0, "reason": "Demands money, tells her to hide it"}
+    r["alerted"] = True
+    t = timeline.trace([r])
+    assert [(x["layer"], x["status"]) for x in t] == [("L2", "block"), ("L3", "flag"), ("L4", "block"), ("L9", "pass")]
+    assert "official demands" in t[0]["output"] and "urgency, secrecy, authority" in t[1]["output"]
+    assert "Arjun alerted" in t[2]["output"]
+
+
+def test_trace_reports_cedar_refusal_when_no_payment_follows():
+    assert steps([inv(), gate()])[-3:] == [("L5", "block"), ("L7", "pass"), ("L9", "pass")]
+
+
+def test_trace_of_an_approval_request_is_short_and_in_ist():
+    a = {"kind": "approval_requested", "outcome": "pending", "timestamp": "4",
+         "input": {"payeeName": "Ravi", "payeeVpa": "ravi@okicici", "amountInr": 1500.0, "sessionId": "kv-x"},
+         "layers": {"L8": {"coolingEndsAt": "2026-11-23T14:23:00+00:00"}}}
+    step = [x for x in timeline.trace([a]) if x["layer"] == "L8"][0]
+    assert step["input"] == "New payee Ravi (ravi@okicici), ₹1,500"
+    assert step["output"] == "Sent to Arjun · can't be paid before 23 Nov, 7:53 PM IST"

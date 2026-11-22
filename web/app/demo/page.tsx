@@ -3,6 +3,7 @@
 import { ArrowRight, BellRing, Check, CheckCircle2, CircleAlert, Hourglass, Loader2, RotateCcw, Send, ShieldCheck, UserPlus, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DemoBar } from "@/components/DemoBar";
+import { Trace } from "@/components/Trace";
 import { RAIL } from "@/components/landing/LayerRail";
 import { api, type Approval, type ChatTurn, type LayerStatus, type LedgerRow } from "@/lib/api";
 import { explain } from "@/lib/explain";
@@ -185,21 +186,29 @@ export default function GuidedDemo() {
         {/* ---------- What just happened ---------- */}
         <section aria-live="polite" className="mt-5">
           {chat.error && <p role="alert" className="rounded-2xl border border-block bg-block-soft p-4 text-block">{chat.error}</p>}
-          {what && (
-            <div className="flex flex-col gap-4 rounded-3xl border-2 p-5 md:flex-row md:items-center"
-              style={{ borderColor: `var(--color-${what.tone})`, background: `var(--color-${what.tone}-soft)` }}>
-              <div className="flex-1">
-                <p className="text-xs font-bold uppercase tracking-wider text-ink-3">What just happened</p>
-                <p className="mt-1 text-xl font-extrabold" style={{ color: `var(--color-${what.tone})` }}>{what.headline}</p>
-                <ul className="mt-2 space-y-1 text-sm text-ink">
-                  {what.points.slice(0, 4).map((p) => <li key={p} className="flex gap-2"><span aria-hidden>•</span>{p}</li>)}
-                </ul>
+          {what && chat.last && (
+            <div className="rounded-3xl border-2 p-5" style={{ borderColor: `var(--color-${what.tone})`, background: `var(--color-${what.tone}-soft)` }}>
+              <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                <div className="flex-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-ink-3">What just happened</p>
+                  <p className="mt-1 text-xl font-extrabold" style={{ color: `var(--color-${what.tone})` }}>{what.headline}</p>
+                  {chat.last.trace?.length ? (
+                    <p className="mt-1 text-sm text-ink-2">Every step below is what that layer was given and what it decided, read back from the signed audit log.</p>
+                  ) : (
+                    <ul className="mt-2 space-y-1 text-sm text-ink">
+                      {what.points.slice(0, 4).map((p) => <li key={p} className="flex gap-2"><span aria-hidden>•</span>{p}</li>)}
+                    </ul>
+                  )}
+                </div>
+                {step < STEPS.length - 1 && ran && (
+                  <button onClick={() => setStep(step + 1)} className="flex shrink-0 items-center justify-center gap-2 rounded-full bg-navy-950 px-6 py-3 font-bold text-white hover:bg-navy-900">
+                    Next: {STEPS[step + 1].title} <ArrowRight className="h-4 w-4" />
+                  </button>
+                )}
               </div>
-              {step < STEPS.length - 1 && ran && (
-                <button onClick={() => setStep(step + 1)} className="flex shrink-0 items-center justify-center gap-2 rounded-full bg-navy-950 px-6 py-3 font-bold text-white hover:bg-navy-900">
-                  Next: {STEPS[step + 1].title} <ArrowRight className="h-4 w-4" />
-                </button>
-              )}
+              {chat.last.trace?.length ? (
+                <div className="mt-4"><Trace message={[...chat.messages].reverse().find((m) => m.from === "user")?.text ?? ""} turn={chat.last} /></div>
+              ) : null}
             </div>
           )}
           {!what && !chat.busy && !chat.error && (

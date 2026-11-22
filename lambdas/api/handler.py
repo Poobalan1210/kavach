@@ -165,11 +165,15 @@ def chat(caller, body, _params):
     if not reply:
         reply = FALLBACK_REPLY.get(language, FALLBACK_REPLY["en"])
     lim = limits_for(RULES[household["mode"]])
-    layers = timeline.build(timeline.records_since(sid, started), lim.coercion_threshold)
+    records = timeline.records_since(sid, started)
+    layers = timeline.build(records, lim.coercion_threshold)
     after = store.get_session(sid)
     return {
         "reply": reply,
         "layers": layers,
+        "trace": timeline.trace(records, lim.coercion_threshold, names={
+            p["payeeId"]: p["name"] for p in store.table("payees").query(
+                KeyConditionExpression=Key("householdId").eq(household["householdId"]))["Items"]}),
         "outcome": timeline.outcome(layers),
         "paused": bool(after.get("paused")), "pauseRule": after.get("pauseRule"),
         "tainted": bool(after.get("tainted")),
