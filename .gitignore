@@ -1,0 +1,16 @@
+node_modules/
+cdk.out/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env*
+.DS_Store
+.next/
+lambdas/common/rules.generated.json
+lambdas/common/system_prompt.generated.md
+web/.env.production
+web/out/
+web/node_modules/
+next-env.d.ts
+web/.next-prod/

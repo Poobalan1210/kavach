@@ -1,0 +1,21 @@
+{
+  "hookEventId": "3a149a02-90e7-4a81-b9a0-b8c077a1c19a",
+  "name": "spike_tool_gate",
+  "event": "before_tool_call",
+  "harnessArn": "arn:aws:bedrock-agentcore:us-east-1:333105300941:harness/kavach_spike-RmUjTtjv8R",
+  "sessionId": "spike-throw-36cfcbbe-b6f9-49cb-a1ea-4d38352685af",
+  "context": {
+    "toolName": "spike_echo",
+    "toolType": "inline_function",
+    "toolInput": {
+      "mode": "throw",
+      "message": "hello"
+    },
+    "toolUseId": "tooluse_PGSEAJPQC0ZWgIyCbrvxKr"
+  },
+  "headers": {
+    "baggage": "Self=1-6b01bc3e-025e037c338c98b026b3029f,harness.endpoint.qualifier=DEFAULT,harness.id=kavach_spike-RmUjTtjv8R,session.id=spike-throw-36cfcbbe-b6f9-49cb-a1ea-4d38352685af",
+    "X-Amzn-Trace-Id": "Root=1-6b01bc3e-2e6092c36cba75871c50eb68;Parent=5055112b924e841a;Sampled=1",
+    "traceparent": "00-6b01bc3e2e6092c36cba75871c50eb68-5055112b924e841a-01"
+  }
+}

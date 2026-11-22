@@ -1,0 +1,80 @@
+[
+  {
+    "name": "list_payees",
+    "description": "List the household's saved, active payees (name, category, payeeId). Use this to find who the user means.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "The current session ID, exactly as given in the system prompt." }
+      },
+      "required": ["sessionId"]
+    }
+  },
+  {
+    "name": "lookup_bill",
+    "description": "Look up the amount due on a saved biller payee (electricity, water, mobile). Returns amount in rupees and due date.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "The current session ID, exactly as given in the system prompt." },
+        "payeeId": { "type": "string", "description": "payeeId from list_payees." }
+      },
+      "required": ["sessionId", "payeeId"]
+    }
+  },
+  {
+    "name": "pay_saved_payee",
+    "description": "Pay a saved, active payee. Amount is in rupees. Returns a receipt, or the rule that held or blocked the payment.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "The current session ID, exactly as given in the system prompt." },
+        "payeeId": { "type": "string", "description": "payeeId from list_payees." },
+        "amountInr": { "type": "number", "description": "Amount in rupees, e.g. 1240 or 1240.50." },
+        "note": { "type": "string", "description": "Short note for the receipt." }
+      },
+      "required": ["sessionId", "payeeId", "amountInr"]
+    }
+  },
+  {
+    "name": "request_approval",
+    "description": "Ask the family approver to approve something Kavach cannot do alone: a new payee, a payment over the limit, or a payment after untrusted content was read.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "The current session ID, exactly as given in the system prompt." },
+        "type": { "type": "string", "description": "One of: new_payee, over_limit, tainted." },
+        "reason": { "type": "string", "description": "One plain sentence explaining what the user wants." },
+        "payeeName": { "type": "string", "description": "For new_payee: the payee's name." },
+        "payeeVpa": { "type": "string", "description": "For new_payee: the payee's UPI ID." },
+        "payeeId": { "type": "string", "description": "For over_limit or tainted: the saved payee." },
+        "amountInr": { "type": "number", "description": "Amount in rupees, if a payment is involved." }
+      },
+      "required": ["sessionId", "type", "reason"]
+    }
+  },
+  {
+    "name": "explain_rule",
+    "description": "Return a household rule in plain language and when it was set. Use it to explain why something was held or blocked.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "The current session ID, exactly as given in the system prompt." },
+        "ruleId": { "type": "string", "description": "Rule ID such as R3 or S1." }
+      },
+      "required": ["sessionId", "ruleId"]
+    }
+  },
+  {
+    "name": "alert_family",
+    "description": "Send an alert to the family approver, for example when the user seems to be under pressure from a caller.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "The current session ID, exactly as given in the system prompt." },
+        "reason": { "type": "string", "description": "One plain sentence on why the approver is being alerted." }
+      },
+      "required": ["sessionId", "reason"]
+    }
+  }
+]

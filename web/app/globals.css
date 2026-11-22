@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-jakarta), var(--font-noto), var(--font-noto-tamil), var(--font-noto-deva), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-noto), system-ui, sans-serif;
+
+  /* Brand: deep navy, with green for safe and red for stopped. */
+  --color-navy-950: #050d1c;
+  --color-navy-900: #0a1730;
+  --color-navy-800: #102447;
+  --color-navy-700: #18325e;
+  --color-sky: #6aa7ff;
+  --color-safe: #22c58b;
+  --color-danger: #ff5d5d;
+  --color-amber: #ffb547;
+
+  --color-surface: #fbfaf7;
+  --color-panel: #ffffff;
+  --color-line: #e3e1db;
+  --color-ink: #121212;
+  --color-ink-2: #4f4d48;
+  --color-ink-3: #77746c;
+  --color-brand: #1d4f8f;
+  --color-brand-soft: #e6eef8;
+
+  /* Status: always shown with an icon and a word, never colour alone. */
+  --color-pass: #1a7f37;
+  --color-pass-soft: #e3f5e8;
+  --color-flag: #8a5a00;
+  --color-flag-soft: #fff4d6;
+  --color-block: #c5221f;
+  --color-block-soft: #fde8e7;
+  --color-idle: #8b8880;
+  --color-idle-soft: #f1f0ec;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: #141413;
+    --color-panel: #1d1d1b;
+    --color-line: #34332f;
+    --color-ink: #f2f1ed;
+    --color-ink-2: #c6c4bc;
+    --color-ink-3: #9b988f;
+    --color-brand: #8db7ec;
+    --color-brand-soft: #1e2c3d;
+    --color-pass: #5cc77a;
+    --color-pass-soft: #16301f;
+    --color-flag: #e8b84a;
+    --color-flag-soft: #352a10;
+    --color-block: #f07a74;
+    --color-block-soft: #3a1817;
+    --color-idle: #8b8880;
+    --color-idle-soft: #262522;
+  }
+}
+
+html,
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The senior's app: large type and big targets. */
+.senior {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Hero backdrop: a quiet grid and a glow, no stock imagery. */
+.hero-bg {
+  background:
+    radial-gradient(60rem 30rem at 75% 10%, rgba(106, 167, 255, 0.22), transparent 60%),
+    radial-gradient(40rem 25rem at 10% 90%, rgba(34, 197, 139, 0.12), transparent 60%),
+    linear-gradient(180deg, var(--color-navy-950), var(--color-navy-900));
+}
+.grid-lines {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+}
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+/* Entrance animations in plain CSS: they always finish, even where JS-driven ones stall. */
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.reveal { animation: reveal-in 0.45s ease-out both; }
+.rise { animation: rise-in 0.6s ease-out both; }
+.pop { animation: pop-in 0.45s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .rise, .pop { animation: none; }
+}
+
+/* The hero fork: each branch draws itself in. */
+.fork-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  animation: draw-line 0.9s ease-out 0.8s forwards;
+}
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fork-line { animation: none; stroke-dashoffset: 0; }
+}

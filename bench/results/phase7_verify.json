@@ -1,0 +1,109 @@
+{
+  "checks": [
+    {
+      "check": "judge starts a session for Kamala's household",
+      "pass": true,
+      "detail": {
+        "sessionId": "kv-hh-kamala-35f8ea96-2e00-4459-8254-fc03d3b37b75",
+        "householdId": "hh-kamala",
+        "language": "en",
+        "owner": "Kamala",
+        "approver": "Arjun"
+      }
+    },
+    {
+      "check": "judge: bill paid, nine layers returned, L6 passed",
+      "pass": true,
+      "detail": {
+        "code": 200,
+        "outcome": "clear",
+        "reply": "The electricity bill for TANGEDCO has been paid.\n\n- Payee: TANGEDCO Electricity  \n- Amount: ₹1,240  \n- Transaction ID: txn-20261122110029-26083440",
+        "seconds": 15.25
+      }
+    },
+    {
+      "check": "kamala: digital-arrest message pauses the session, L2 blocks",
+      "pass": true,
+      "detail": {
+        "code": 200,
+        "pauseRule": "R6",
+        "outcome": "blocked",
+        "reply": "Sorry, I can't process this request. \n\nNo government agency like CBI or RBI ever asks for money over a call or message. This sounds like a scam. \n\nPlease don't "
+      }
+    },
+    {
+      "check": "kamala: activity lists her payments",
+      "pass": true,
+      "detail": {
+        "code": 200,
+        "rows": 60
+      }
+    },
+    {
+      "check": "kamala: the paid bill's signed record verifies (KMS)",
+      "pass": true,
+      "detail": {
+        "code": 200,
+        "valid": true,
+        "lock": {
+          "mode": "COMPLIANCE",
+          "retainUntil": "2026-12-22 05:30:30.043000+00:00"
+        }
+      }
+    },
+    {
+      "check": "kamala can't read Priya's household",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "kamala can't decide approvals",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "no token: 401",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "arjun sees the plumber waiting for him",
+      "pass": true,
+      "detail": {
+        "code": 200,
+        "pending": 2
+      }
+    },
+    {
+      "check": "arjun approves; the 24-hour wait still applies",
+      "pass": true,
+      "detail": {
+        "code": 200,
+        "body": {
+          "ok": true,
+          "decision": "approved",
+          "coolingEndsAt": "2026-11-23T05:30:48.234026+00:00"
+        }
+      }
+    },
+    {
+      "check": "browser CORS preflight passes",
+      "pass": true,
+      "detail": {
+        "Content-Type": "application/json",
+        "Content-Length": "0",
+        "Connection": "close",
+        "Date": "Sun, 22 Nov 2026 05:31:02 GMT",
+        "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+        "x-amzn-RequestId": "57ae15bf-6551-4dd0-a6e1-50c18df1b1c2",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "x-amz-apigw-id": "HOijhFRPoAMEIyw=",
+        "X-Cache": "Miss from cloudfront",
+        "Via": "1.1 eb358255b55e9eeeb94a5af4ac68449c.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Pop": "HYD57-P3",
+        "X-Amz-Cf-Id": "mGbExNsip8jIK9ngZ2uAM1ys8cjOXullnTlwe_N1hNXzhjWyNN_VjQ=="
+      }
+    }
+  ]
+}

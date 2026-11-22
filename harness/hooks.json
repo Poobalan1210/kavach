@@ -1,0 +1,14 @@
+[
+  {
+    "beforeInvocation": {
+      "name": "kavach_coercion_check",
+      "target": { "lambda": { "arn": "${HookInvocationArn}", "timeoutSeconds": 10, "failureMode": "deny" } }
+    }
+  },
+  {
+    "beforeToolCall": {
+      "name": "kavach_tool_gate",
+      "target": { "lambda": { "arn": "${HookToolArn}", "timeoutSeconds": 5, "failureMode": "deny" } }
+    }
+  }
+]

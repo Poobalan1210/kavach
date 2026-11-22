@@ -1,0 +1,84 @@
+{
+  "allow": {
+    "pass": true,
+    "detail": "decisions=['allow'] handed=1 stop=tool_use",
+    "text": "",
+    "hook_events": [
+      {
+        "hookEventId": "8301733f-e1dc-4b5e-ab1b-6fb2b92a2ea6",
+        "name": "spike_tool_gate",
+        "type": "before_tool_call",
+        "decision": "allow",
+        "reason": "spike: allowed"
+      }
+    ],
+    "tool_uses": [
+      {
+        "toolUseId": "tooluse_y3amesLXdv9mnfuknxZ5CN",
+        "name": "spike_echo",
+        "input": "{\"mode\":\"allow\",\"message\":\"hello\"}"
+      }
+    ],
+    "stop_reasons": [
+      "tool_use"
+    ],
+    "errors": [],
+    "sessionId": "spike-allow-924dcf73-e398-44d4-abba-f9bd222d8099"
+  },
+  "deny": {
+    "pass": true,
+    "detail": "decisions=['deny'] handed=1 stop=end_turn",
+    "text": "The call to spike_echo was blocked due to the \"deny\" mode.",
+    "hook_events": [
+      {
+        "hookEventId": "a3a3c48d-fdd0-4f8c-8666-59cde7e009f6",
+        "name": "spike_tool_gate",
+        "type": "before_tool_call",
+        "decision": "deny",
+        "reason": "spike: denied mode='deny'"
+      }
+    ],
+    "tool_uses": [
+      {
+        "toolUseId": "tooluse_vm9UfGomKWHRNHNdFr1cFH",
+        "name": "spike_echo",
+        "input": "{\"mode\":\"deny\",\"message\":\"hello\"}"
+      }
+    ],
+    "stop_reasons": [
+      "tool_use",
+      "tool_result",
+      "end_turn"
+    ],
+    "errors": [],
+    "sessionId": "spike-deny-9c851baa-4b52-4531-8d45-f710b0e5395c"
+  },
+  "throw": {
+    "pass": true,
+    "detail": "decisions=['deny'] handed=1 stop=end_turn",
+    "text": "The call to spike_echo with mode \"throw\" and message \"hello\" was blocked or failed, resulting in the message \"Hook target invocation failed\".",
+    "hook_events": [
+      {
+        "hookEventId": "3a149a02-90e7-4a81-b9a0-b8c077a1c19a",
+        "name": "spike_tool_gate",
+        "type": "before_tool_call",
+        "decision": "deny",
+        "reason": "Hook target invocation failed"
+      }
+    ],
+    "tool_uses": [
+      {
+        "toolUseId": "tooluse_PGSEAJPQC0ZWgIyCbrvxKr",
+        "name": "spike_echo",
+        "input": "{\"mode\":\"throw\",\"message\":\"hello\"}"
+      }
+    ],
+    "stop_reasons": [
+      "tool_use",
+      "tool_result",
+      "end_turn"
+    ],
+    "errors": [],
+    "sessionId": "spike-throw-36cfcbbe-b6f9-49cb-a1ea-4d38352685af"
+  }
+}

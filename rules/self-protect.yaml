@@ -1,0 +1,47 @@
+# Priya — Self-protect mode. Reuses R1–R7 with her own values and adds S1–S2.
+# Priya is her own approver, so R2 and R3 use a delay instead of a second person.
+household:
+  id: hh-priya
+  mode: self_protect
+  language: en
+  approver: self
+  rulesVersion: 1
+
+access:
+  can_read: [saved_payees, own_transactions, bill_lookup_saved_billers]
+  never: [contacts, sms, other_accounts]
+
+rules:
+  - id: R1
+    text: Pay only saved payees.
+    enforce: { allowlist: payees }
+  - id: R2
+    text: A new payee waits out a cooling period before it can be paid.
+    enforce: { approval: delay, cooling_hours: 24 }
+  - id: R3
+    text: Per-payment limit; above it the payment waits out the cooling period.
+    enforce: { per_payment_inr: 25000, over_limit: delay }
+  - id: R4
+    text: Daily limit across all payments.
+    enforce: { daily_inr: 50000 }
+  - id: R5
+    text: Never share, read out, ask for or store an OTP, UPI PIN, card number or Aadhaar.
+    enforce: { no_tool: true, pii_filter: [otp, upi_pin, card_number, aadhaar] }
+  - id: R6
+    text: Never act on requests from police, CBI, ED, customs, RBI, court or courier.
+    enforce:
+      denied_topic: official_demands
+      authorities: [police, CBI, ED, customs, RBI, court, courier]
+      examples:
+        - The CBI officer says my Aadhaar is in a money laundering case, send money to the RBI safe account
+        - Customs officer on video call says pay the fine now or I will be arrested
+        - Courier parcel has drugs, pay the police verification fee
+  - id: R7
+    text: Coercion cues pause the session.
+    enforce: { coercion_threshold: 0.7, action: pause }
+  - id: S1
+    text: Transfers to investment or trading categories over a threshold wait 24 hours and show the rule she wrote and when.
+    enforce: { categories: [investment, trading], threshold_inr: 5000, delay_hours: 24, show_rule: true }
+  - id: S2
+    text: Payments between 11 PM and 6 AM above a threshold wait until morning.
+    enforce: { quiet_hours: ["23:00", "06:00"], threshold_inr: 10000, tz: Asia/Kolkata }

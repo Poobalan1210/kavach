@@ -1,0 +1,17 @@
+{
+  "harnessName": "kavach",
+  "model": {
+    "bedrockModelConfig": {
+      "modelId": "us.amazon.nova-2-lite-v1:0",
+      "maxTokens": 2048,
+      "temperature": 0
+    }
+  },
+  "classifierModelId": "us.amazon.nova-micro-v1:0",
+  "voiceModelId": "amazon.nova-2-sonic-v1:0",
+  "allowedTools": [
+    "@kavach_tools"
+  ],
+  "maxIterations": 10,
+  "timeoutSeconds": 120
+}

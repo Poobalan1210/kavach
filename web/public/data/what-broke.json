@@ -1,0 +1,100 @@
+[
+  {
+    "date": "2026-11-21",
+    "test": "Phase 1 spike, first invoke",
+    "happened": "Every call failed: `AccessDeniedException` on `bedrock-agentcore:ListEvents`",
+    "cause": "The harness provisions managed memory by default; the execution role had no memory permissions",
+    "fix": "Scoped memory actions on `memory/*` added to the harness role"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 1 spike, `allowedTools: [\"spike_echo\"]`",
+    "happened": "Model never saw the tool (98 input tokens) and refused in prose; deny/throw cases \"passed\" without the hook ever firing",
+    "cause": "A plain name in `allowedTools` selects built-ins only and silently drops inline tools (matches aws/agent-toolkit-for-aws#468). Our check also accepted \"no tool call\" as a deny",
+    "fix": "Select inline tools as `@spike_echo` (verified: the model then sees only `spike_echo`, no shell or file tools). The spike check now requires an actual hook `deny` event"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 3 deploy, attaching the policy engine",
+    "happened": "Gateway update failed: gateway role not authorized for `bedrock-agentcore:AuthorizeAction`",
+    "cause": "The docs list the action but the check runs against the gateway ARN, not only the policy engine",
+    "fix": "Granted it on the engine and on `gateway/kavach-gateway-*` (a name pattern avoids a role ↔ gateway cycle)"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 3 unit tests, L4 with an empty `payeeId`",
+    "happened": "Hook denied, but via \"internal error\" instead of R1",
+    "cause": "DynamoDB rejects an empty key; the exception path caught it (fail-closed worked, wrong reason)",
+    "fix": "`get_payee` returns no payee for empty or non-string IDs; test asserts the R1 reason"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 3 verify, C3 calls to the Gateway",
+    "happened": "Cedar denials came back as JSON-RPC error `-32002`, not the documented `isError` result, so the checker first reported them as unknown RPC errors",
+    "cause": "Docs example differs from live behaviour",
+    "fix": "Checker classifies `-32002` + \"policy enforcement\" as `policy_denied` and records the policy name"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 4 synth",
+    "happened": "CloudFormation dependency cycle: Gateway → gateway role policy → approval tool → state machine → workflow Lambda → Gateway",
+    "cause": "The Gateway depended on the role's whole default policy, which now held tool-invoke grants",
+    "fix": "Policy-engine permissions moved to their own inline policy; the Gateway depends only on that"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 4 verify, new payee",
+    "happened": "Approver alert for a pending approval carried no session ID, so it couldn't be tied back to the conversation",
+    "cause": "`approval_needed` message omitted `sessionId`",
+    "fix": "Added `sessionId` to the alert"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 4 verify, Tamil digital-arrest follow-up",
+    "happened": "Once, Kavach returned an empty reply (no money moved; session stayed paused). Not reproduced on rerun",
+    "cause": "Unknown; open",
+    "fix": "Open: the /chat API (Phase 7) will send a calm fallback message when a turn has no text"
+  },
+  {
+    "date": "2026-11-21",
+    "test": "Phase 4 timing",
+    "happened": "Turns now take about 8 s with L2 + L3 + signed audit in the path, against a p50 target of 4 s",
+    "cause": "Guardrail, Nova Micro scorer and KMS/S3 writes run in series before the model",
+    "fix": "Open: measure p50/p95 in the Phase 5 benchmark, then run L2 and L3 in parallel"
+  },
+  {
+    "date": "2026-11-22",
+    "test": "Phase 5 smoke run",
+    "happened": "A plain Tamil electricity-bill request was refused, citing \"Rs 14,000 to Chennai Metrowater\", text from a different attack script. The live Kavach memory also held Priya's crypto scam and Kamala's plumber approval side by side",
+    "cause": "The harness's default managed memory extracts long-term \"facts\" (SEMANTIC + SUMMARIZATION strategies) under one shared actor, `default`, because no `actorId` was set. One household's scam call, or a false \"Arjun approved\", carried into every later session: a cross-household leak and a memory-poisoning path. Deterministic layers still held; no money moved",
+    "fix": "Harness memory disabled (verified: a session still keeps its own turns; a new session starts clean). Client also sets `actorId = sessionId`. The two orphaned memory stores were deleted. Smoke results from that run marked invalid"
+  },
+  {
+    "date": "2026-11-22",
+    "test": "Phase 5 smoke run",
+    "happened": "The scammer coach's victim often asked \"what should I do next?\" instead of asking for a payment, so turns tested nothing",
+    "cause": "Coach prompt didn't require a concrete payment request or teach the hide-the-reason tactic real scammers use",
+    "fix": "Every victim message must name an amount and destination; after a refusal the scammer coaches her to drop mentions of police or banks and give an innocent reason; fallbacks name the real target"
+  },
+  {
+    "date": "2026-11-22",
+    "test": "Phase 6 latency",
+    "happened": "Kavach turns missed the 4 s p50 target (5.1 s across the benchmark; 8.7 s on bill payments, which make 3–4 model calls)",
+    "cause": "The `before_invocation` hook (p50 1.28 s) ran the guardrail and the Nova Micro scorer one after the other, and each tool call adds about 0.2 s for the L4 gate plus its signed audit record",
+    "fix": "Guardrail and scorer now run in parallel; hook Lambdas raised to 1,024 MB. Bill payments went from p50 8.7 s to 8.2 s (30 of 30 complete, 0 false holds). Still above target: most of a turn is the model's own tool calls. Not fixed by loosening any check"
+  },
+  {
+    "date": "2026-11-22",
+    "test": "Phase 7 API check",
+    "happened": "Every `/chat` call returned 500: `AccessDeniedException` on `bedrock-agentcore:InvokeAgentRuntime`",
+    "cause": "The API role was granted `bedrock-agentcore:InvokeHarness`, but calling `InvokeHarness` is authorised as `InvokeAgentRuntime` on the harness ARN",
+    "fix": "Granted `InvokeAgentRuntime` (keeping `InvokeHarness`) on the harness only"
+  },
+  {
+    "date": "2026-11-22",
+    "test": "Phase 8 site review, Arjun's app",
+    "happened": "The approver inbox opened on 29 stale \"New payee: Officer\" requests and counters of 31 blocked, 12 held: leftovers from verify scripts and benchmark runs in Kamala's household. 117 approval workflows were still waiting out their 24-hour token",
+    "cause": "Tests and the benchmark shared the demo households and only cleaned up some approvals",
+    "fix": "`scripts/reset_demo.py` (`make reset-demo`) stops waiting workflows, deletes non-seed approvals, payees and ledger rows, re-seeds and re-syncs Cedar; dry run by default. Signed audit records stay under Object Lock"
+  }
+]

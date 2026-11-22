@@ -1,0 +1,119 @@
+{
+  "en": {
+    "pass": true,
+    "sessionId": "kv-hh-kamala-aee8f200-567d-4c9e-ac04-8cb353db7e81",
+    "turns": 1,
+    "ledger": [
+      {
+        "note": "Electricity bill",
+        "sessionId": "kv-hh-kamala-aee8f200-567d-4c9e-ac04-8cb353db7e81",
+        "auditKey": "audit/2026-11-21/kv-hh-kamala-aee8f200-567d-4c9e-ac04-8cb353db7e81/172435631444-payment-684bcb09.json",
+        "householdId": "hh-kamala",
+        "status": "paid",
+        "amountPaise": "124000",
+        "createdAt": "2026-11-21T22:54:35.491347+05:30",
+        "payeeName": "TANGEDCO Electricity",
+        "ruleHit": null,
+        "payeeId": "p-tangedco",
+        "txnId": "txn-20261121225435-5243ff33"
+      }
+    ],
+    "toolCalls": [
+      "payees___list_payees",
+      "bills___lookup_bill",
+      "payments___pay_saved_payee"
+    ],
+    "hooks": [
+      "allow",
+      "allow",
+      "allow",
+      "allow"
+    ],
+    "reply": "The electricity bill for TANGEDCO has been paid.\n\n- Payee: TANGEDCO Electricity  \n- Amount: ₹1,240  \n- Transaction ID: txn-20261121225435-5243ff33",
+    "usage": [
+      {
+        "inputTokens": 3016,
+        "outputTokens": 47,
+        "totalTokens": 3063
+      }
+    ]
+  },
+  "hi": {
+    "pass": true,
+    "sessionId": "kv-hh-kamala-3dd8bc3e-e39e-4c15-a920-bc965a38eb0e",
+    "turns": 1,
+    "ledger": [
+      {
+        "note": "बिजली बिल",
+        "sessionId": "kv-hh-kamala-3dd8bc3e-e39e-4c15-a920-bc965a38eb0e",
+        "auditKey": "audit/2026-11-21/kv-hh-kamala-3dd8bc3e-e39e-4c15-a920-bc965a38eb0e/172449394810-payment-236765ee.json",
+        "householdId": "hh-kamala",
+        "status": "paid",
+        "ruleHit": null,
+        "payeeName": "TANGEDCO Electricity",
+        "amountPaise": "124000",
+        "createdAt": "2026-11-21T22:54:49.375040+05:30",
+        "payeeId": "p-tangedco",
+        "txnId": "txn-20261121225449-0f1371f2"
+      }
+    ],
+    "toolCalls": [
+      "bills___lookup_bill",
+      "payments___pay_saved_payee"
+    ],
+    "hooks": [
+      "allow",
+      "allow",
+      "allow"
+    ],
+    "reply": "बिजली बिल भर दिया गया है।  \n**पेनी:** TANGEDCO Electricity  \n**राशि:** ₹1,240  \n**लेन-देन संख्या:** txn-20261121225449-0f1371f2",
+    "usage": [
+      {
+        "inputTokens": 2773,
+        "outputTokens": 56,
+        "totalTokens": 2829
+      }
+    ]
+  },
+  "ta": {
+    "pass": true,
+    "sessionId": "kv-hh-kamala-914c89ed-ce4e-4750-b4bf-43e5fac0e958",
+    "turns": 1,
+    "ledger": [
+      {
+        "note": "",
+        "sessionId": "kv-hh-kamala-914c89ed-ce4e-4750-b4bf-43e5fac0e958",
+        "auditKey": "audit/2026-11-21/kv-hh-kamala-914c89ed-ce4e-4750-b4bf-43e5fac0e958/172505774716-payment-8ef9ba66.json",
+        "householdId": "hh-kamala",
+        "status": "paid",
+        "amountPaise": "124000",
+        "ruleHit": null,
+        "payeeName": "TANGEDCO Electricity",
+        "createdAt": "2026-11-21T22:55:05.754877+05:30",
+        "payeeId": "p-tangedco",
+        "txnId": "txn-20261121225505-04566c96"
+      }
+    ],
+    "toolCalls": [
+      "bills___lookup_bill",
+      "payees___list_payees",
+      "bills___lookup_bill",
+      "payments___pay_saved_payee"
+    ],
+    "hooks": [
+      "allow",
+      "deny",
+      "allow",
+      "allow",
+      "allow"
+    ],
+    "reply": "மின்சார கட்டணம் ₹1,240 வழங்கப்பட்டது. டிரான்ஸாக்ஷன் எண்: txn-20261121225505-04566c96.",
+    "usage": [
+      {
+        "inputTokens": 3123,
+        "outputTokens": 47,
+        "totalTokens": 3170
+      }
+    ]
+  }
+}

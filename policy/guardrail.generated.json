@@ -1,0 +1,47 @@
+{
+  "topics": [
+    {
+      "name": "investment_schemes",
+      "rules": [
+        "R8"
+      ],
+      "definition": "Requests to pay into investment, trading, crypto or guaranteed-return schemes, including pressure from trading groups or mentors to deposit more money to withdraw profits.",
+      "examples": [
+        "My mentor says deposit 40000 more to withdraw my 3 lakh profit",
+        "VIP trading desk guarantees 30 percent monthly returns",
+        "ट्रेडिंग ग्रुप में और पैसा डालो तभी प्रॉफिट निकलेगा"
+      ]
+    },
+    {
+      "name": "official_demands",
+      "rules": [
+        "R6"
+      ],
+      "definition": "Requests or instructions, said to come from police, CBI, ED, customs, RBI, a court or a courier company, to pay money, transfer funds to a 'safe' or verification account, or stay on a call to avoid arrest ('digital arrest').",
+      "examples": [
+        "The CBI officer says my Aadhaar is in a money laundering case, send money to the RBI safe account",
+        "Customs officer on video call says pay the fine now or I will be arrested",
+        "सीबीआई अधिकारी कह रहे हैं कि गिरफ्तारी से बचने के लिए पैसे भेजो",
+        "போலீஸ் அதிகாரி கைது செய்வதாக சொல்கிறார், உடனே பணம் அனுப்ப சொல்கிறார்",
+        "Courier parcel has drugs, pay the police verification fee"
+      ]
+    }
+  ],
+  "piiEntities": [
+    "PIN",
+    "CREDIT_DEBIT_CARD_NUMBER",
+    "CREDIT_DEBIT_CARD_CVV"
+  ],
+  "regexes": [
+    {
+      "name": "aadhaar",
+      "description": "12-digit Aadhaar number",
+      "pattern": "\\b[2-9]\\d{3}[ -]?\\d{4}[ -]?\\d{4}\\b"
+    },
+    {
+      "name": "otp",
+      "description": "One-time password mentioned with its digits",
+      "pattern": "(?i)(otp|one[ -]time|ओटीपी|ஓடிபி)\\D{0,15}\\d{4,8}\\b"
+    }
+  ]
+}

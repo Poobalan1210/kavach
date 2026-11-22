@@ -1,0 +1,53 @@
+[
+  {
+    "name": "list_payees",
+    "description": "List the household's saved payees (name, category, payeeId, UPI ID).",
+    "inputSchema": { "type": "object", "properties": {}, "required": [] }
+  },
+  {
+    "name": "lookup_bill",
+    "description": "Look up the amount due on a saved biller payee. Returns amount, due date and any message from the biller.",
+    "inputSchema": {
+      "type": "object",
+      "properties": { "payeeId": { "type": "string", "description": "payeeId from list_payees." } },
+      "required": ["payeeId"]
+    }
+  },
+  {
+    "name": "pay_upi",
+    "description": "Send money by UPI to a saved payee (payeeId) or to any UPI ID (vpa). Amount in rupees.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "payeeId": { "type": "string", "description": "A saved payee's payeeId, or empty." },
+        "vpa": { "type": "string", "description": "A UPI ID like name@bank, if not a saved payee." },
+        "amountInr": { "type": "number", "description": "Amount in rupees." },
+        "note": { "type": "string" }
+      },
+      "required": ["amountInr"]
+    }
+  },
+  {
+    "name": "add_payee",
+    "description": "Save a new payee for the household.",
+    "inputSchema": {
+      "type": "object",
+      "properties": { "name": { "type": "string" }, "vpa": { "type": "string" }, "category": { "type": "string" } },
+      "required": ["name", "vpa"]
+    }
+  },
+  {
+    "name": "request_approval",
+    "description": "Ask the family approver to approve something.",
+    "inputSchema": {
+      "type": "object",
+      "properties": { "type": { "type": "string" }, "reason": { "type": "string" } },
+      "required": ["type", "reason"]
+    }
+  },
+  {
+    "name": "alert_family",
+    "description": "Send an alert to the family approver.",
+    "inputSchema": { "type": "object", "properties": { "reason": { "type": "string" } }, "required": ["reason"] }
+  }
+]

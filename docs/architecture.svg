@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" font-family="Helvetica, Arial, sans-serif">
+  <title>Kavach architecture: a message passes two classifiers and four code layers before any money moves</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#5b6475"/>
+    </marker>
+    <style>
+      .box{fill:#fff;stroke:#c9cfda;stroke-width:1.5}
+      .cls{fill:#fff7e6;stroke:#e3a72f;stroke-width:1.5}
+      .code{fill:#eaf1fb;stroke:#2f63b5;stroke-width:1.5}
+      .hum{fill:#e9f7ef;stroke:#2e9a5b;stroke-width:1.5}
+      .ev{fill:#f1f1f4;stroke:#6b7280;stroke-width:1.5}
+      .t{font-size:15px;font-weight:700;fill:#121826}
+      .s{font-size:12px;fill:#4b5563}
+      .tag{font-size:12px;font-weight:700}
+      .ln{stroke:#5b6475;stroke-width:1.6;fill:none;marker-end:url(#a)}
+      .dash{stroke-dasharray:5 4}
+      .h{font-size:13px;font-weight:700;fill:#6b7280;letter-spacing:.06em}
+    </style>
+  </defs>
+  <rect width="1280" height="760" fill="#fbfaf7"/>
+
+  <!-- Apps -->
+  <text x="40" y="44" class="h">APPS</text>
+  <rect x="40" y="60" width="200" height="70" rx="10" class="box"/>
+  <text x="56" y="88" class="t">Kamala's app</text><text x="56" y="110" class="s">Tamil · Hindi · English</text>
+  <rect x="40" y="146" width="200" height="70" rx="10" class="box"/>
+  <text x="56" y="174" class="t">Arjun's app</text><text x="56" y="196" class="s">approvals · verify records</text>
+  <rect x="40" y="232" width="200" height="70" rx="10" class="box"/>
+  <text x="56" y="260" class="t">Shield Console</text><text x="56" y="282" class="s">judges · Scam Theatre</text>
+
+  <rect x="300" y="146" width="200" height="70" rx="10" class="box"/>
+  <text x="316" y="174" class="t">API Gateway</text><text x="316" y="196" class="s">Cognito sign-in · API Lambda</text>
+  <path d="M240 95 C270 95 270 170 296 175" class="ln"/>
+  <path d="M240 181 L296 181" class="ln"/>
+  <path d="M240 267 C270 267 270 192 296 188" class="ln"/>
+
+  <!-- Harness -->
+  <text x="560" y="44" class="h">AGENTCORE HARNESS · NOVA 2 LITE</text>
+  <rect x="560" y="60" width="680" height="250" rx="14" fill="#f4f6fa" stroke="#c9cfda" stroke-width="1.5"/>
+  <path d="M500 181 L556 181" class="ln"/>
+
+  <rect x="580" y="80" width="300" height="94" rx="10" class="cls"/>
+  <text x="596" y="104" class="tag" fill="#a8700a">before_invocation hook</text>
+  <text x="596" y="128" class="t">L2 Bedrock Guardrail</text>
+  <text x="596" y="150" class="t">L3 Nova Micro coercion scorer</text>
+  <text x="596" y="166" class="s">pause · taint · alert Arjun</text>
+
+  <rect x="580" y="196" width="300" height="94" rx="10" class="ev"/>
+  <text x="596" y="222" class="t">L1 System prompt</text>
+  <text x="596" y="244" class="s">explains rules kindly; never counted</text>
+  <text x="596" y="266" class="s">memory off: nothing outlives a session</text>
+
+  <rect x="910" y="80" width="310" height="94" rx="10" class="code"/>
+  <text x="926" y="104" class="tag" fill="#1f4f9a">before_tool_call hook · fail closed</text>
+  <text x="926" y="128" class="t">L4 Tool gate</text>
+  <text x="926" y="150" class="s">session binding · saved payees (R1)</text>
+  <text x="926" y="166" class="s">paused / tainted sessions can't pay</text>
+  <path d="M880 127 L906 127" class="ln"/>
+
+  <!-- Gateway + tools -->
+  <text x="560" y="358" class="h">AGENTCORE GATEWAY · TOOLS</text>
+  <rect x="910" y="374" width="310" height="86" rx="10" class="code"/>
+  <text x="926" y="398" class="tag" fill="#1f4f9a">AgentCore Policy · ENFORCE</text>
+  <text x="926" y="422" class="t">L5 Cedar</text>
+  <text x="926" y="444" class="s">payee allowlist · amount caps · categories</text>
+  <path d="M1065 174 L1065 370" class="ln"/>
+
+  <rect x="910" y="484" width="310" height="96" rx="10" class="code"/>
+  <text x="926" y="508" class="tag" fill="#1f4f9a">6 tool Lambdas · one IAM role each (L7)</text>
+  <text x="926" y="532" class="t">L6 Payment checks</text>
+  <text x="926" y="554" class="s">re-checks every limit · atomic daily total</text>
+  <text x="926" y="570" class="s">DynamoDB conditional write (R4)</text>
+  <path d="M1065 460 L1065 480" class="ln"/>
+
+  <rect x="910" y="610" width="310" height="70" rx="10" class="box"/>
+  <text x="926" y="638" class="t">Mock UPI ledger</text><text x="926" y="660" class="s">DynamoDB · the only place money moves</text>
+  <path d="M1065 580 L1065 606" class="ln"/>
+
+  <!-- Human + evidence -->
+  <rect x="560" y="484" width="300" height="96" rx="10" class="hum"/>
+  <text x="576" y="508" class="tag" fill="#1f7a45">request_approval → Step Functions</text>
+  <text x="576" y="532" class="t">L8 Arjun approves</text>
+  <text x="576" y="554" class="s">then a 24-hour cooling period;</text>
+  <text x="576" y="570" class="s">the agent can ask, never grant</text>
+  <path d="M906 532 L864 532" class="ln"/>
+  <path d="M560 532 C330 532 330 190 244 186" class="ln dash"/>
+  <text x="352" y="420" class="s">SNS alert to Arjun</text>
+
+  <rect x="560" y="610" width="300" height="70" rx="10" class="ev"/>
+  <text x="576" y="638" class="t">L9 Signed audit</text>
+  <text x="576" y="660" class="s">KMS ECDSA signature · S3 Object Lock</text>
+  <path d="M906 645 L864 645" class="ln dash"/>
+
+  <!-- rules source -->
+  <rect x="40" y="610" width="460" height="70" rx="10" fill="#121826"/>
+  <text x="58" y="638" font-size="15" font-weight="700" fill="#fff">rules/guardian.yaml · rules/self-protect.yaml</text>
+  <text x="58" y="660" font-size="12" fill="#c9cfda">single source of truth → Cedar policy, Guardrail topics, every limit</text>
+
+  <text x="40" y="730" class="s">Every rule is held by at least two independent layers. In testing, L5–L7 alone held all 40 attacks with the model and L4 bypassed by a script that always tries to pay the scammer.</text>
+</svg>
