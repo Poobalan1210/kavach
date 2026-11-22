@@ -114,3 +114,18 @@ def test_demo_daily_turn_cap(api, db, monkeypatch):
 
 def test_chat_rejects_non_session_ids(api):
     assert demo(api, "POST", "/chat", body={"sessionId": "demo-quota#2026-01-01", "text": "hi"})[0] == 404
+
+
+def test_demo_decision_is_made_as_the_household_approver(api, db, monkeypatch):
+    db.Table("kavach-approvals").put_item(Item={"approvalId": "apr-demo", "householdId": "hh-kamala", "decision": "pending"})
+    sent = {}
+
+    class FakeLambda:
+        def invoke(self, FunctionName, Payload):
+            sent.update(json.loads(Payload))
+            return {"Payload": __import__("io").BytesIO(b'{"ok": true, "decision": "approved", "coolingEndsAt": "x"}')}
+
+    monkeypatch.setenv("APPROVER_FN", "fn")
+    monkeypatch.setattr(api, "_lambda", lambda: FakeLambda())
+    code, _ = demo(api, "POST", "/approvals/{id}", body={"decision": "approve"}, path={"id": "apr-demo"})
+    assert code == 200 and sent["decidedBy"] == "arjun"

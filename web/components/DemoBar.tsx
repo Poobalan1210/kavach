@@ -1,10 +1,11 @@
 "use client";
 
-import { LayoutDashboard, Smartphone, UserCheck } from "lucide-react";
+import { LayoutDashboard, PlayCircle, Smartphone, UserCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Shield } from "@/components/Shield";
 
 const VIEWS = [
+  { href: "/demo/", label: "Guided demo", icon: PlayCircle },
   { href: "/console/", label: "Shield Console", icon: LayoutDashboard },
   { href: "/senior/", label: "Kamala's phone", icon: Smartphone },
   { href: "/senior/?household=hh-priya", label: "Priya's phone", icon: Smartphone },

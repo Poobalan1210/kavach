@@ -71,7 +71,7 @@ export default function Landing() {
               <a href="#scenarios" className="rounded-full bg-safe px-6 py-3.5 font-bold text-navy-950 shadow-[0_10px_30px_-10px_var(--color-safe)] hover:brightness-110">
                 Watch it stop a scam →
               </a>
-              <a href="#how" className="glass rounded-full px-6 py-3.5 font-semibold text-white hover:bg-white/10">How it works</a>
+              <a href="/demo/" className="glass rounded-full px-6 py-3.5 font-semibold text-white hover:bg-white/10">Try it live</a>
             </div>
             <div className="mt-12 grid max-w-lg grid-cols-3 gap-6">
               {[

@@ -201,10 +201,12 @@ def decide(caller, body, params):
     approval = store.table("approvals").get_item(Key={"approvalId": params["id"]}).get("Item")
     if not approval or approval["householdId"] != caller["householdId"]:
         raise ApiError(404, "no such approval")
+    # A demo visitor acts as the household's approver (Arjun); signed-in approvers act as themselves.
+    decided_by = store.get_household(approval["householdId"]).get("approverId") if caller.get("demo") else caller["user"]
     resp = _lambda().invoke(
         FunctionName=os.environ["APPROVER_FN"],
         Payload=json.dumps({"approvalId": params["id"], "decision": body.get("decision"),
-                            "decidedBy": "a demo visitor" if caller.get("demo") else caller["user"], "category": body.get("category")}),
+                            "decidedBy": decided_by, "category": body.get("category")}),
     )
     result = json.loads(resp["Payload"].read())
     if not result.get("ok"):

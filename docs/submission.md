@@ -9,12 +9,12 @@ Kavach is a UPI payments agent on the Amazon Bedrock AgentCore harness, using on
 **Tags:** amazon-bedrock-agentcore, amazon-nova, guardrails, ai-security, fintech
 
 **Links:**
-- Live demo: https://main.d3fjay6nf7qqoi.amplifyapp.com/console/ (no sign-in; also Kamala's phone, Priya's phone and Arjun's app from the top bar)
+- Live demo: https://main.d3fjay6nf7qqoi.amplifyapp.com/demo/ (no sign-in: three guided steps with Kamala's and Arjun's phones side by side; the Shield Console and each app are one tap away)
 - Repository: https://github.com/Poobalan1210/kavach
 - Video: _to add after recording_ (script in `docs/video-script.md`)
 
 **Cover image:** `docs/screenshots/03-console-live-block.png` (the Shield Console blocking a live digital-arrest attempt).
 
-**Screenshots (7, in `docs/screenshots/`):** landing page, see-it-decide comparison, live Shield Console block, Kamala's phone in Tamil, Arjun's approvals, the benchmark page, the what-broke log.
+**Screenshots (8, in `docs/screenshots/`):** the guided live demo (both phones during the scam step), landing page, see-it-decide comparison, live Shield Console block, Kamala's phone in Tamil, Arjun's approvals, the benchmark page, the what-broke log.
 
 **Article:** `docs/article.md`, ready to paste into Builder Center.

@@ -12,7 +12,7 @@ const COLUMNS = [
     ["Source code (GitHub)", "https://github.com/Poobalan1210/kavach"],
   ] },
   { title: "Live demo", links: [
-    ["Shield Console", "/console/"], ["Kamala's phone", "/senior/"], ["Priya's phone", "/senior/?household=hh-priya"], ["Arjun's app", "/approver/"],
+    ["Guided demo", "/demo/"], ["Shield Console", "/console/"], ["Kamala's phone", "/senior/"], ["Priya's phone", "/senior/?household=hh-priya"], ["Arjun's app", "/approver/"],
   ] },
 ];
 

@@ -20,7 +20,7 @@ export function SiteNav({ current }: { current?: string }) {
             {l.label}
           </a>
         ))}
-        <a href="/console/" className="rounded-full bg-white px-4 py-2 text-navy-950 hover:bg-white/90">Live demo</a>
+        <a href="/demo/" className="rounded-full bg-white px-4 py-2 text-navy-950 hover:bg-white/90">Live demo</a>
       </div>
     </nav>
   );

@@ -15,7 +15,7 @@ Read the full write-up in [`docs/article.md`](docs/article.md).
 | ![Landing page](docs/screenshots/01-landing.png) | ![Shield Console blocking a live digital-arrest attempt](docs/screenshots/03-console-live-block.png) |
 | ![Arjun's approvals](docs/screenshots/05-arjun-approvals.png) | ![Kamala's phone, in Tamil](docs/screenshots/04-kamala-phone.png) |
 
-More in [`docs/screenshots/`](docs/screenshots/): the scenario comparison, the benchmark page and the what-broke log.
+More in [`docs/screenshots/`](docs/screenshots/): the guided live demo with both phones, the scenario comparison, the benchmark page and the what-broke log.
 
 ## Layout
 
