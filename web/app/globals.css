@@ -133,3 +133,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .fork-line { animation: none; stroke-dashoffset: 0; }
 }
+
+/* The scam story: each scene's progress bar; when it ends, the next scene starts. */
+.story-bar { width: 0; animation-name: story-grow; animation-timing-function: linear; animation-fill-mode: forwards; }
+@keyframes story-grow { to { width: 100%; } }

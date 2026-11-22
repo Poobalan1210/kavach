@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { HeroFork } from "@/components/landing/HeroFork";
 import { LayerRail } from "@/components/landing/LayerRail";
+import { ScamStory } from "@/components/landing/ScamStory";
 import { ScenarioCompare } from "@/components/landing/ScenarioCompare";
 import { Shield } from "@/components/Shield";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -68,7 +69,7 @@ export default function Landing() {
               Rules your family sets when calm, enforced when your mother is panicking on a fake CBI call.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <a href="#scenarios" className="rounded-full bg-safe px-6 py-3.5 font-bold text-navy-950 shadow-[0_10px_30px_-10px_var(--color-safe)] hover:brightness-110">
+              <a href="#story" className="rounded-full bg-safe px-6 py-3.5 font-bold text-navy-950 shadow-[0_10px_30px_-10px_var(--color-safe)] hover:brightness-110">
                 Watch it stop a scam →
               </a>
               <a href="/demo/" className="glass rounded-full px-6 py-3.5 font-semibold text-white hover:bg-white/10">Try it live</a>
@@ -104,6 +105,17 @@ export default function Landing() {
               <p className="mt-4 text-xs text-ink-3 group-hover:underline">Source: {s.sourceName} ↗</p>
             </motion.a>
           ))}
+        </div>
+      </section>
+
+      {/* ---------- The story: one scam, start to finish ---------- */}
+      <section id="story" className="border-t border-line py-24">
+        <div className="mx-auto max-w-6xl px-5">
+          <motion.p {...fade} className="text-sm font-bold uppercase tracking-widest text-brand">One scam, start to finish</motion.p>
+          <motion.h2 {...fade} className="mt-3 max-w-3xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+            How a “digital arrest” scam plays out, and where Kavach steps in
+          </motion.h2>
+          <ScamStory />
         </div>
       </section>
 
