@@ -36,7 +36,12 @@ export default function WhatBroke() {
           <p className="mt-4 max-w-2xl text-lg text-white/70">
             What happened, why, and the fix. A hard limit is never loosened to pass a test; the layer that let something through gets fixed.
           </p>
-          {entries && <p className="mt-6 text-sm text-white/50">{entries.length} entries · published as-is from the build log</p>}
+          {entries && (
+            <p className="mt-6 text-sm text-white/50">
+              {entries.length} entries · published as-is from{" "}
+              <a className="underline hover:text-white" href="https://github.com/Poobalan1210/kavach/blob/main/docs/what-broke.md">docs/what-broke.md</a>
+            </p>
+          )}
         </div>
       </header>
 

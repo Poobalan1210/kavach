@@ -10,7 +10,7 @@ Kavach is a UPI payments agent on the Amazon Bedrock AgentCore harness, using on
 
 **Links:**
 - Live demo: https://main.d3fjay6nf7qqoi.amplifyapp.com/console/ (no sign-in; also Kamala's phone, Priya's phone and Arjun's app from the top bar)
-- Repository: _to add once the repo is public_
+- Repository: https://github.com/Poobalan1210/kavach
 - Video: _to add after recording_ (script in `docs/video-script.md`)
 
 **Cover image:** `docs/screenshots/03-console-live-block.png` (the Shield Console blocking a live digital-arrest attempt).

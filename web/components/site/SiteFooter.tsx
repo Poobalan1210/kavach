@@ -9,6 +9,7 @@ const COLUMNS = [
   { title: "Explore", links: [
     ["How it works", "/#how"], ["See it decide", "/#scenarios"], ["Where it fits", "/#fits"], ["Benchmark", "/benchmark/"], ["What broke", "/what-broke/"],
     ["Architecture", "/architecture.svg"], ["Raw results (JSON)", "/data/raw/run-full-1.json"],
+    ["Source code (GitHub)", "https://github.com/Poobalan1210/kavach"],
   ] },
   { title: "Live demo", links: [
     ["Shield Console", "/console/"], ["Kamala's phone", "/senior/"], ["Priya's phone", "/senior/?household=hh-priya"], ["Arjun's app", "/approver/"],
