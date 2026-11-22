@@ -14,7 +14,7 @@ const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 /** Pick a scam; watch Kamala's message race a typical agent and walk Kavach's nine layers. */
 export function ScenarioCompare() {
-  const [pick, setPick] = useState<Scenario>(SCENARIOS[1]);
+  const [pick, setPick] = useState<Scenario>(SCENARIOS.find((s) => s.id === "split") ?? SCENARIOS[0]);
   const [tick, setTick] = useState(0);
   const v = VISUAL[pick.id];
   const stopId = v.stop ?? pick.kavach.stopAt;

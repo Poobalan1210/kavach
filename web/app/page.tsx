@@ -76,7 +76,7 @@ export default function Landing() {
             </div>
             <div className="mt-12 grid max-w-lg grid-cols-3 gap-6">
               {[
-                [pct(results?.C2), "coached scams that moved money"],
+                [results ? `${results.C2.breaches} of ${results.C2.attackRuns}` : "–", "coached scams moved money"],
                 [results ? `${results.C2.legitComplete}/${results.C2.legitRuns}` : "–", "everyday payments done"],
                 ["9", "independent layers"],
               ].map(([n, l]) => (
@@ -302,6 +302,7 @@ function Arrow() {
 /** Beat 1 of How it works: the household's rules, switchable between Kamala (set by Arjun) and Priya (set by herself). */
 function RulesBeat() {
   const [who, setWho] = useState<"kamala" | "priya">("kamala");
+  const [all, setAll] = useState(false); // phones show 4 rules until asked
   const rules = who === "kamala" ? RULES : PRIYA_RULES;
   return (
     <>
@@ -318,13 +319,18 @@ function RulesBeat() {
         </div>
       </div>
       <ol className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
-        {rules.map((r) => (
-          <li key={r.id} className="glass rounded-2xl p-3.5">
-            <span className="font-mono text-xs font-bold text-sky">{r.id}</span>
-            <p className="mt-1 text-sm leading-snug text-white/85">{r.text}</p>
+        {rules.map((r, n) => (
+          <li key={r.id} className={`glass flex gap-3 rounded-2xl p-3.5 sm:block ${n >= 4 && !all ? "hidden sm:block" : ""}`}>
+            <span className="font-mono text-xs font-bold leading-5 text-sky">{r.id}</span>
+            <p className="text-sm leading-snug text-white/85 sm:mt-1">{r.text}</p>
           </li>
         ))}
       </ol>
+      {!all && rules.length > 4 && (
+        <button onClick={() => setAll(true)} className="glass mt-2 w-full rounded-2xl p-3 text-sm font-semibold text-sky sm:hidden">
+          Show all {rules.length} rules
+        </button>
+      )}
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <p className="glass rounded-2xl p-3.5 text-sm text-white/80"><span className="font-bold text-safe">Kavach can read</span> · {ACCESS.can.join(", ")}</p>
         <p className="glass rounded-2xl p-3.5 text-sm text-white/80"><span className="font-bold text-danger">Never</span> · {ACCESS.never.join(", ")}</p>

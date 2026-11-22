@@ -55,6 +55,10 @@ export function LayerRail({
 }) {
   const moneyColor = !money || money.tone === "idle" ? "rgba(255,255,255,0.18)" : money.tone === "block" ? "var(--color-danger)" : "var(--color-safe)";
   return (
+    <div className="relative">
+    {/* narrow screens: a fade and a hint say the row scrolls */}
+    <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#0a1730] to-transparent lg:hidden" aria-hidden />
+    <p className="mb-2 text-xs font-semibold text-white/50 lg:hidden">Swipe to see all nine layers →</p>
     <div className="overflow-x-auto pb-2">
       <div className="relative mx-auto min-w-[920px]">
         {/* group bands */}
@@ -110,6 +114,7 @@ export function LayerRail({
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -18,9 +18,9 @@ LAYERS = [
     ("L4", "Tool gate", "Session binding, saved payees, taint, pause"),
     ("L5", "Cedar policy", "Per-household payee allowlist and amount caps at the Gateway"),
     ("L6", "Payment checks", "Re-checks every limit; atomic daily total"),
-    ("L7", "Scoped IAM", "One role per tool; the agent can only reach the Gateway"),
-    ("L8", "Human approval", "New payees and big payments wait for the approver"),
-    ("L9", "Signed audit", "Every decision signed with KMS, locked in S3"),
+    ("L7", "Scoped access", "One IAM role per tool; the agent can only reach the Gateway"),
+    ("L8", "Family approval", "New payees and big payments wait for the approver"),
+    ("L9", "Signed proof", "Every decision signed with KMS, locked in S3"),
 ]
 
 

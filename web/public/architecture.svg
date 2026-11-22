@@ -88,7 +88,7 @@
   <text x="352" y="420" class="s">SNS alert to Arjun</text>
 
   <rect x="560" y="610" width="300" height="70" rx="10" class="ev"/>
-  <text x="576" y="638" class="t">L9 Signed audit</text>
+  <text x="576" y="638" class="t">L9 Signed proof</text>
   <text x="576" y="660" class="s">KMS ECDSA signature · S3 Object Lock</text>
   <path d="M906 645 L864 645" class="ln dash"/>
 

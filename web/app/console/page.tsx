@@ -13,7 +13,7 @@ import { SCENARIOS } from "@/lib/story";
 import { useChat } from "@/lib/useChat";
 
 const TABS = [
-  { id: "live", label: "Guided demo", note: "Talk to the live Kavach as Kamala and watch every layer" },
+  { id: "live", label: "Try it", note: "Talk to the live Kavach as Kamala and watch every layer" },
   { id: "theatre", label: "Scam Theatre", note: "The same scam against a prompt-only agent and against Kavach" },
   { id: "results", label: "Results", note: "40 coached scams and 30 real tasks, four configurations" },
   { id: "layers", label: "The nine layers", note: "What each layer does and which rules it holds" },
@@ -23,8 +23,8 @@ type Tab = (typeof TABS)[number]["id"];
 const ICON: Record<string, string> = { bill: "⚡", arrest: "🚔", split: "✂️", sms: "✉️", limit: "₹" };
 
 const HOUSEHOLDS = [
-  { id: "hh-kamala", label: "Kamala's household (Guardian; Arjun approves)" },
-  { id: "hh-priya", label: "Priya (Self-protect; her own rules)" },
+  { id: "hh-kamala", label: "Kamala · Arjun approves" },
+  { id: "hh-priya", label: "Priya · her own rules" },
 ];
 const LANGS = [
   { id: "en", label: "English" },

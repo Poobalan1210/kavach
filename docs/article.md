@@ -51,7 +51,7 @@ Every message passes two classifiers, then four layers of plain code, before a r
 | L4 | `before_tool_call` Lambda hook, fail-closed: session binding, saved payees, taint, pause | code |
 | L5 | AgentCore Gateway + AgentCore Policy (Cedar), generated from the rules | code |
 | L6 | Payment Lambda: re-checks every limit; DynamoDB conditional write for the daily total | code |
-| L7 | Scoped IAM: one role per tool; the agent's role can only reach the Gateway | code |
+| L7 | Scoped access: one IAM role per tool; the agent's role can only reach the Gateway | code |
 | L8 | Step Functions approval: Arjun decides, then the cooling period; the agent can ask, never grant | human |
 | L9 | Every decision signed with a KMS key and stored under S3 Object Lock (compliance, 30 days) | evidence |
 

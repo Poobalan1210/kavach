@@ -45,6 +45,14 @@ const T: Record<Lang, Record<string, string>> = {
 
 export default function SeniorPage() {
   const household = useHousehold();
+  // One static page serves both phones, so the tab title follows the household.
+  // Next applies the layout's metadata title after hydration, so set ours just after it.
+  useEffect(() => {
+    const title = `${household === "hh-priya" ? "Priya" : "Kamala"}'s phone · Kavach`;
+    document.title = title;
+    const t = setTimeout(() => { document.title = title; }, 400);
+    return () => clearTimeout(t);
+  }, [household]);
   return (
     <>
       <DemoBar />
@@ -55,7 +63,7 @@ export default function SeniorPage() {
 }
 
 function Senior({ me }: { me: { householdId: Household } }) {
-  const [lang, setLang] = useState<Lang>(me.householdId === "hh-kamala" ? "ta" : "en");
+  const [lang, setLang] = useState<Lang>("en");
   const [view, setView] = useState<"chat" | "payments">("chat");
   const [text, setText] = useState("");
   const chat = useChat();
@@ -76,7 +84,7 @@ function Senior({ me }: { me: { householdId: Household } }) {
 
   return (
     <main className="senior mx-auto flex min-h-dvh max-w-xl flex-col px-4 py-4">
-      <header className="mb-4 flex items-center justify-between">
+      <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold">{t.hello}, {chat.session?.owner ?? (me.householdId === "hh-priya" ? "Priya" : "Kamala")}</h1>
         <div className="flex gap-1" role="group" aria-label="Language">
           {(["ta", "hi", "en"] as Lang[]).map((l) => (
@@ -121,8 +129,8 @@ function Senior({ me }: { me: { householdId: Household } }) {
           </div>
           <form className="sticky bottom-0 mt-4 flex gap-2 bg-surface py-2" onSubmit={(e) => { e.preventDefault(); send(text); }}>
             <input value={text} onChange={(e) => setText(e.target.value)} placeholder={t.type} aria-label={t.type}
-              className="min-h-14 flex-1 rounded-xl border-2 border-line bg-panel px-4 text-xl" />
-            <button disabled={chat.busy || !text.trim()} className="min-h-14 rounded-xl bg-brand px-5 text-xl font-semibold text-white disabled:opacity-50">
+              className="min-h-14 min-w-0 flex-1 rounded-xl border-2 border-line bg-panel px-4 text-xl" />
+            <button disabled={chat.busy || !text.trim()} className="min-h-14 shrink-0 rounded-xl bg-brand px-5 text-xl font-semibold text-white disabled:opacity-50">
               {t.send}
             </button>
           </form>

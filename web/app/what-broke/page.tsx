@@ -17,6 +17,25 @@ function Md({ text }: { text: string }) {
   );
 }
 
+/** Plain-language summary of the log's most important entries, for readers who won't read it all. */
+const LESSONS = [
+  {
+    title: "One family's scam call leaked into another's session",
+    body: "The platform's default memory carried a scam script from one household into another. No money moved: the code layers held.",
+    lesson: "Defaults aren't neutral. Shared memory is off, and every session starts clean.",
+  },
+  {
+    title: "A test passed because the check never ran",
+    body: "A tool was silently dropped, so the model never called it, and our deny tests \u201cpassed\u201d without the enforcement hook ever firing.",
+    lesson: "A test now passes only if it sees the hook's actual deny.",
+  },
+  {
+    title: "Safety cost us speed: 5.1 s, against a 4 s goal",
+    body: "The guardrail, the pressure scorer and the signed audit log all sit in the path of every message.",
+    lesson: "We run the checks in parallel and report the miss, rather than drop a layer to hit the number.",
+  },
+];
+
 const serious = (e: Entry) => /memory/i.test(e.cause) && /leak/i.test(e.cause);
 
 export default function WhatBroke() {
@@ -46,7 +65,20 @@ export default function WhatBroke() {
       </header>
 
       <main className="mx-auto max-w-4xl px-5 py-14">
-        <ol className="relative space-y-5 border-l-2 border-line pl-6">
+        <section aria-labelledby="lessons">
+          <h2 id="lessons" className="text-sm font-bold uppercase tracking-widest text-brand">The three lessons that mattered most</h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            {LESSONS.map((l) => (
+              <article key={l.title} className="rounded-3xl border border-line bg-panel p-6">
+                <p className="text-lg font-bold leading-snug">{l.title}</p>
+                <p className="mt-2 text-sm text-ink-2">{l.body}</p>
+                <p className="mt-3 text-sm font-semibold text-pass">{l.lesson}</p>
+              </article>
+            ))}
+          </div>
+          <h2 className="mt-14 text-sm font-bold uppercase tracking-widest text-ink-3">The full log, in order</h2>
+        </section>
+        <ol className="relative mt-5 space-y-5 border-l-2 border-line pl-6">
           {(entries ?? []).map((e, i) => (
             <li key={i} className="relative">
               <span className={`absolute -left-[33px] top-6 h-4 w-4 rounded-full border-4 border-surface ${serious(e) ? "bg-danger" : "bg-amber"}`} aria-hidden />

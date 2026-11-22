@@ -45,7 +45,7 @@ export function ScamStory() {
   const go = (n: number) => { setI(n); setRun((r) => r + 1); };
 
   return (
-    <div className="mx-auto mt-12 max-w-5xl">
+    <div className="mt-12">
       <div className="overflow-hidden rounded-[1.75rem] bg-navy-950 shadow-2xl ring-1 ring-black/10">
         {/* the stage */}
         <div ref={ref} className="relative w-full overflow-hidden" style={{ height: H * scale }}>

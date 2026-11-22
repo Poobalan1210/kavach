@@ -34,7 +34,7 @@ export function HeroFork() {
       {/* outcomes */}
       <div className="grid grid-cols-2 gap-4">
         <Outcome delay="1.6s" icon={<Brain className="h-7 w-7 text-white/80" strokeWidth={1.8} />} ring="rgba(255,255,255,0.25)"
-          who="Typical AI agent" big={`${LOST} lost`} small="believed a new story" color="var(--color-danger)" />
+          who="Typical AI agent" big={`${LOST} lost`} small="to a follow-up “hospital bill”" color="var(--color-danger)" />
         <Outcome delay="2s" icon={<ShieldCheck className="h-7 w-7 text-safe" strokeWidth={1.8} />} ring="var(--color-safe)"
           who="Kavach" big="₹0 moved" small="Arjun alerted" color="var(--color-safe)" glow />
       </div>

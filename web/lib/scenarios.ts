@@ -212,9 +212,9 @@ export const LAYER_ROWS = [
   { id: "L4", name: "Tool gate" },
   { id: "L5", name: "Cedar policy" },
   { id: "L6", name: "Payment checks" },
-  { id: "L7", name: "Scoped IAM" },
-  { id: "L8", name: "Human approval" },
-  { id: "L9", name: "Signed audit" },
+  { id: "L7", name: "Scoped access" },
+  { id: "L8", name: "Family approval" },
+  { id: "L9", name: "Signed proof" },
 ];
 
 // Short, visual labels for the animated rail: a few words at each layer that acts,

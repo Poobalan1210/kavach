@@ -97,7 +97,10 @@ function Approvals() {
         <div className="rounded-3xl border border-line bg-panel p-8 text-center">
           <ShieldCheck className="mx-auto h-10 w-10 text-safe" />
           <p className="mt-3 text-lg font-bold">Nothing waiting for you</p>
-          <p className="mt-1 text-sm text-ink-2">Try a scam on <a className="font-semibold text-brand underline" href="/senior/">Kamala's phone</a>: anything unusual lands here.</p>
+          <p className="mt-1 text-sm text-ink-2">When a scammer pressures Amma or she adds someone new, it lands here.</p>
+          <a href="/demo/?step=2" className="mt-5 inline-flex rounded-full bg-safe px-5 py-2.5 text-sm font-bold text-navy-950 hover:brightness-110">
+            Watch an alert arrive →
+          </a>
         </div>
       )}
       {pending.map((a) => {

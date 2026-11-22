@@ -62,6 +62,17 @@ export default function GuidedDemo() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [text, setText] = useState("");
   const opened = useRef(Date.now() - 5000);
+  const phonesRef = useRef<HTMLElement>(null);
+  const resultRef = useRef<HTMLElement>(null);
+  // On narrow screens the phones and the result stack, so follow the turn down the page.
+  const follow = (el: HTMLElement | null) => {
+    if (el && window.matchMedia("(max-width: 1023px)").matches) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+  };
+  // ?step=2 opens on a given step (Arjun's app links straight to the scam).
+  useEffect(() => {
+    const n = Number(new URLSearchParams(window.location.search).get("step"));
+    if (n >= 1 && n <= STEPS.length) setStep(n - 1);
+  }, []);
   const current = STEPS[step];
 
   const refreshArjun = useCallback(async () => {
@@ -85,6 +96,7 @@ export default function GuidedDemo() {
   async function run(message: string) {
     if (!message.trim() || chat.busy) return;
     setText("");
+    follow(phonesRef.current);
     // A fresh session per step, so one step's pause doesn't colour the next.
     const s = await chat.start(HOUSEHOLD, lang).catch(() => null);
     if (!s) return;
@@ -95,6 +107,7 @@ export default function GuidedDemo() {
     if (turn.paused) setNotes((n) => [{ kind: "alert" as const, id: `p-${s.sessionId}`, at: Date.now(), rule: turn.pauseRule }, ...n]);
     else if (tone === "block") setNotes((n) => [{ kind: "refused" as const, id: `r-${s.sessionId}`, at: Date.now() }, ...n]);
     await refreshArjun();
+    follow(resultRef.current);
   }
 
   const what = chat.last && !chat.busy ? explain(chat.last) : null;
@@ -164,7 +177,7 @@ export default function GuidedDemo() {
         </section>
 
         {/* ---------- The stage: Kamala · layers · Arjun ---------- */}
-        <section className="mt-5 grid gap-5 lg:grid-cols-[1fr_15rem_1fr]">
+        <section ref={phonesRef} className="mt-5 grid scroll-mt-4 gap-5 lg:grid-cols-[1fr_15rem_1fr]">
           <Phone title="Kamala's phone" subtitle="Kavach, in her language" avatar="K" from="#1d4f8f" to="#6aa7ff">
             <KamalaScreen messages={chat.messages} busy={chat.busy} />
             <form className="flex gap-2 border-t border-line p-2.5" onSubmit={(e) => { e.preventDefault(); run(text); }}>
@@ -184,7 +197,7 @@ export default function GuidedDemo() {
         </section>
 
         {/* ---------- What just happened ---------- */}
-        <section aria-live="polite" className="mt-5">
+        <section ref={resultRef} aria-live="polite" className="mt-5 scroll-mt-4">
           {chat.error && <p role="alert" className="rounded-2xl border border-block bg-block-soft p-4 text-block">{chat.error}</p>}
           {what && chat.last && (
             <div className="rounded-3xl border-2 p-5" style={{ borderColor: `var(--color-${what.tone})`, background: `var(--color-${what.tone}-soft)` }}>

@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { SiteNav } from "@/components/site/SiteNav";
+
+export const metadata: Metadata = { title: "Page not found" };
 
 export default function NotFound() {
   return (
@@ -10,7 +13,7 @@ export default function NotFound() {
         <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">Nothing here. Nothing paid, either.</h1>
         <div className="mt-8 flex flex-wrap gap-3">
           <a href="/" className="rounded-full bg-safe px-6 py-3 font-bold text-navy-950">Back to Kavach</a>
-          <a href="/console/" className="glass rounded-full px-6 py-3 font-semibold">Open the live demo</a>
+          <a href="/demo/" className="glass rounded-full px-6 py-3 font-semibold">Open the live demo</a>
         </div>
       </main>
     </div>
