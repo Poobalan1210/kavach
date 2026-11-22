@@ -52,15 +52,15 @@
     "date": "2026-11-21",
     "test": "Phase 4 verify, Tamil digital-arrest follow-up",
     "happened": "Once, Kavach returned an empty reply (no money moved; session stayed paused). Not reproduced on rerun",
-    "cause": "Unknown; open",
-    "fix": "Open: the /chat API (Phase 7) will send a calm fallback message when a turn has no text"
+    "cause": "Unknown; not reproduced since",
+    "fix": "Mitigated in Phase 7: the /chat API sends a calm fallback message in her language whenever a turn has no text (`FALLBACK_REPLY` in `lambdas/api/handler.py`). The root cause stays unknown"
   },
   {
     "date": "2026-11-21",
     "test": "Phase 4 timing",
     "happened": "Turns now take about 8 s with L2 + L3 + signed audit in the path, against a p50 target of 4 s",
     "cause": "Guardrail, Nova Micro scorer and KMS/S3 writes run in series before the model",
-    "fix": "Open: measure p50/p95 in the Phase 5 benchmark, then run L2 and L3 in parallel"
+    "fix": "Measured in Phase 5, then L2 and L3 moved to run in parallel in Phase 6 (see the Phase 6 latency entry below: 5.1 s p50, still over the 4 s goal)"
   },
   {
     "date": "2026-11-22",
